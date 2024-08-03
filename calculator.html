@@ -1,0 +1,389 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financial Planning Calculator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
+
+<style>
+    body{
+        background:rgb(17 24 39 / var(--tw-bg-opacity));
+    }
+    .calculator { max-width: 800px; margin: auto; padding: 20px; background-color: #f9f9f9; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .goal { margin-bottom: 30px; }
+    input, button { display: block; width: 100%; margin: 10px 0; padding: 10px; border-radius: 5px; border: 1px solid #ddd; }
+    button { background-color: #4CAF50; color: white; cursor: pointer; }
+</style>
+</head>
+<body>
+
+    <header class="text-gray-400 bg-gray-900 body-font">
+        <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+          <nav class="flex lg:w-2/5 flex-wrap items-center text-base md:ml-auto">
+            <a class="mr-5 hover:text-white" href="about.html">About US</a>
+            <a class="mr-5 hover:text-white" href="service.html">Service</a>
+            <a class="mr-5 hover:text-white" href="products.html">Products</a>
+            <a class="mr-5 hover:text-white" href="calculator.html">Calculator</a>
+            <a class="mr-5 hover:text-white" href="blogs.html">Blogs</a>
+            <a class="mr-5 hover:text-white" href="contact.html">Contact US</a>
+          </nav>
+          <a class="flex order-first lg:order-none lg:w-1/5 title-font font-medium items-center text-white lg:items-center lg:justify-center mb-4 md:mb-0" href="about.html">
+            <img src="img/logo.png" alt="Logo" class="w-20 h-20 rounded-full bg-black-500 p-0">
+            <span class="ml-3 text-xl xl:block lg:hidden">CAPITAL SEED</span>
+          </a>
+        </div>
+      </header>
+    
+
+<div class="calculator">
+<div class="goal">
+    <h2>Child Education Planning</h2>
+    <input type="number" id="childEducationAmount" placeholder="Target Amount">
+    <input type="number" id="childEducationSavings" placeholder="Current Savings">
+    <input type="number" id="childEducationTimeFrame" placeholder="Time Frame (Years)">
+    <input type="number" id="childEducationReturns" placeholder="Expected Returns (%)">
+    <button onclick="calculateChildEducation()">Calculate</button>
+    <p id="childEducationResult"></p>
+</div>
+
+<div class="goal">
+    <h2>Child Wedding Planning</h2>
+    <input type="number" id="childWeddingAmount" placeholder="Target Amount">
+    <input type="number" id="childWeddingSavings" placeholder="Current Savings">
+    <input type="number" id="childWeddingTimeFrame" placeholder="Time Frame (Years)">
+    <input type="number" id="childWeddingReturns" placeholder="Expected Returns (%)">
+    <button onclick="calculateChildWedding()">Calculate</button>
+    <p id="childWeddingResult"></p>
+</div>
+
+<div class="goal">
+    <h2>Dream Home Planning</h2>
+    <input type="number" id="dreamHomeAmount" placeholder="Target Amount">
+    <input type="number" id="dreamHomeSavings" placeholder="Current Savings">
+    <input type="number" id="dreamHomeTimeFrame" placeholder="Time Frame (Years)">
+    <input type="number" id="dreamHomeReturns" placeholder="Expected Returns (%)">
+    <button onclick="calculateDreamHome()">Calculate</button>
+    <p id="dreamHomeResult"></p>
+</div>
+
+<div class="goal">
+    <h2>Dream Car Planning</h2>
+    <input type="number" id="dreamCarAmount" placeholder="Target Amount">
+    <input type="number" id="dreamCarSavings" placeholder="Current Savings">
+    <input type="number" id="dreamCarTimeFrame" placeholder="Time Frame (Years)">
+    <input type="number" id="dreamCarReturns" placeholder="Expected Returns (%)">
+    <button onclick="calculateDreamCar()">Calculate</button>
+    <p id="dreamCarResult"></p>
+</div>
+
+<div class="goal">
+    <h2>Dream Vacation Planning</h2>
+    <input type="number" id="dreamVacationAmount" placeholder="Target Amount">
+    <input type="number" id="dreamVacationSavings" placeholder="Current Savings">
+    <input type="number" id="dreamVacationTimeFrame" placeholder="Time Frame (Years)">
+    <input type="number" id="dreamVacationReturns" placeholder="Expected Returns (%)">
+    <button onclick="calculateDreamVacation()">Calculate</button>
+    <p id="dreamVacationResult"></p>
+</div>
+
+<div class="goal">
+    <h2>Retirement Planning</h2>
+    <input type="number" id="retirementAmount" placeholder="Target Amount">
+    <input type="number" id="retirementSavings" placeholder="Current Savings">
+    <input type="number" id="retirementTimeFrame" placeholder="Time Frame (Years)">
+    <input type="number" id="retirementReturns" placeholder="Expected Returns (%)">
+    <button onclick="calculateRetirement()">Calculate</button>
+    <p id="retirementResult"></p>
+</div>
+
+<div class="goal">
+    <h2>SIP Planning</h2>
+    <input type="number" id="sipAmount" placeholder="Monthly SIP Amount">
+    <input type="number" id="sipTimeFrame" placeholder="Time Frame (Years)">
+    <input type="number" id="sipReturns" placeholder="Expected Returns (%)">
+    <button onclick="calculateSIP()">Calculate</button>
+    <p id="sipResult"></p>
+</div>
+
+<div class="goal">
+    <h2>Custom Goal Planning</h2>
+    <input type="number" id="customGoalAmount" placeholder="Target Amount">
+    <input type="number" id="customGoalSavings" placeholder="Current Savings">
+    <input type="number" id="customGoalTimeFrame" placeholder="Time Frame (Years)">
+    <input type="number" id="customGoalReturns" placeholder="Expected Returns (%)">
+    <button onclick="calculateCustomGoal()">Calculate</button>
+    <p id="customGoalResult"></p>
+</div>
+</div>
+
+<script>
+function calculateFutureValue(amount, savings, years, returns) {
+    var rate = returns / 100;
+    var futureValue = savings * Math.pow((1 + rate), years);
+    var neededSavings = amount - futureValue;
+    return (neededSavings > 0) ? "You need to save more: " + neededSavings.toFixed(2) : "You have enough savings.";
+}
+
+function calculateChildEducation() {
+    var amount = parseFloat(document.getElementById('childEducationAmount').value);
+    var savings = parseFloat(document.getElementById('childEducationSavings').value);
+    var years = parseFloat(document.getElementById('childEducationTimeFrame').value);
+    var returns = parseFloat(document.getElementById('childEducationReturns').value);
+    var result = calculateFutureValue(amount, savings, years, returns);
+    document.getElementById('childEducationResult').innerText = result;
+}
+
+function calculateChildWedding() {
+    var amount = parseFloat(document.getElementById('childWeddingAmount').value);
+    var savings = parseFloat(document.getElementById('childWeddingSavings').value);
+    var years = parseFloat(document.getElementById('childWeddingTimeFrame').value);
+    var returns = parseFloat(document.getElementById('childWeddingReturns').value);
+    var result = calculateFutureValue(amount, savings, years, returns);
+    document.getElementById('childWeddingResult').innerText = result;
+}
+
+function calculateDreamHome() {
+    var amount = parseFloat(document.getElementById('dreamHomeAmount').value);
+    var savings = parseFloat(document.getElementById('dreamHomeSavings').value);
+    var years = parseFloat(document.getElementById('dreamHomeTimeFrame').value);
+    var returns = parseFloat(document.getElementById('dreamHomeReturns').value);
+    var result = calculateFutureValue(amount, savings, years, returns);
+    document.getElementById('dreamHomeResult').innerText = result;
+}
+
+function calculateDreamCar() {
+    var amount = parseFloat(document.getElementById('dreamCarAmount').value);
+    var savings = parseFloat(document.getElementById('dreamCarSavings').value);
+    var years = parseFloat(document.getElementById('dreamCarTimeFrame').value);
+    var returns = parseFloat(document.getElementById('dreamCarReturns').value);
+    var result = calculateFutureValue(amount, savings, years, returns);
+    document.getElementById('dreamCarResult').innerText = result;
+}
+
+function calculateDreamVacation() {
+    var amount = parseFloat(document.getElementById('dreamVacationAmount').value);
+    var savings = parseFloat(document.getElementById('dreamVacationSavings').value);
+    var years = parseFloat(document.getElementById('dreamVacationTimeFrame').value);
+    var returns = parseFloat(document.getElementById('dreamVacationReturns').value);
+    var result = calculateFutureValue(amount, savings, years, returns);
+    document.getElementById('dreamVacationResult').innerText = result;
+}
+
+function calculateRetirement() {
+    var amount = parseFloat(document.getElementById('retirementAmount').value);
+    var savings = parseFloat(document.getElementById('retirementSavings').value);
+    var years = parseFloat(document.getElementById('retirementTimeFrame').value);
+    var returns = parseFloat(document.getElementById('retirementReturns').value);
+    var result = calculateFutureValue(amount, savings, years, returns);
+    document.getElementById('retirementResult').innerText = result;
+}
+
+function calculateSIP() {
+        var sipAmount = parseFloat(document.getElementById('sipAmount').value);
+        var years = parseFloat(document.getElementById('sipTimeFrame').value);
+        var returns = parseFloat(document.getElementById('sipReturns').value);
+        var rate = returns / 100 / 12;
+        var futureValue = sipAmount * (Math.pow(1 + rate, years * 12) - 1) / rate * (1 + rate);
+        document.getElementById('sipResult').innerText = "Future Value: " + futureValue.toFixed(2);
+    }
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financial Planning Calculator</title>
+<style>
+    .calculator { max-width: 800px; margin: auto; padding: 20px; background-color: #f9f9f9; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .goal { margin-bottom: 30px; }
+    input, button { display: block; width: 100%; margin: 10px 0; padding: 10px; border-radius: 5px; border: 1px solid #ddd; }
+    button { background-color: #4CAF50; color: white; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div class="calculator">
+<div class="goal">
+    <h2>Child Education Planning</h2>
+    <input type="number" id="childEducationAmount" placeholder="Target Amount">
+    <input type="number" id="childEducationSavings" placeholder="Current Savings">
+    <input type="number" id="childEducationTimeFrame" placeholder="Time Frame (Years)">
+    <input type="number" id="childEducationReturns" placeholder="Expected Returns (%)">
+    <button onclick="calculateChildEducation()">Calculate</button>
+    <p id="childEducationResult"></p>
+</div>
+
+<div class="goal">
+    <h2>Child Wedding Planning</h2>
+    <input type="number" id="childWeddingAmount" placeholder="Target Amount">
+    <input type="number" id="childWeddingSavings" placeholder="Current Savings">
+    <input type="number" id="childWeddingTimeFrame" placeholder="Time Frame (Years)">
+    <input type="number" id="childWeddingReturns" placeholder="Expected Returns (%)">
+    <button onclick="calculateChildWedding()">Calculate</button>
+    <p id="childWeddingResult"></p>
+</div>
+
+<div class="goal">
+    <h2>Dream Home Planning</h2>
+    <input type="number" id="dreamHomeAmount" placeholder="Target Amount">
+    <input type="number" id="dreamHomeSavings" placeholder="Current Savings">
+    <input type="number" id="dreamHomeTimeFrame" placeholder="Time Frame (Years)">
+    <input type="number" id="dreamHomeReturns" placeholder="Expected Returns (%)">
+    <button onclick="calculateDreamHome()">Calculate</button>
+    <p id="dreamHomeResult"></p>
+</div>
+
+<div class="goal">
+    <h2>Dream Car Planning</h2>
+    <input type="number" id="dreamCarAmount" placeholder="Target Amount">
+    <input type="number" id="dreamCarSavings" placeholder="Current Savings">
+    <input type="number" id="dreamCarTimeFrame" placeholder="Time Frame (Years)">
+    <input type="number" id="dreamCarReturns" placeholder="Expected Returns (%)">
+    <button onclick="calculateDreamCar()">Calculate</button>
+    <p id="dreamCarResult"></p>
+</div>
+
+<div class="goal">
+    <h2>Dream Vacation Planning</h2>
+    <input type="number" id="dreamVacationAmount" placeholder="Target Amount">
+    <input type="number" id="dreamVacationSavings" placeholder="Current Savings">
+    <input type="number" id="dreamVacationTimeFrame" placeholder="Time Frame (Years)">
+    <input type="number" id="dreamVacationReturns" placeholder="Expected Returns (%)">
+    <button onclick="calculateDreamVacation()">Calculate</button>
+    <p id="dreamVacationResult"></p>
+</div>
+
+<div class="goal">
+    <h2>Retirement Planning</h2>
+    <input type="number" id="retirementAmount" placeholder="Target Amount">
+    <input type="number" id="retirementSavings" placeholder="Current Savings">
+    <input type="number" id="retirementTimeFrame" placeholder="Time Frame (Years)">
+    <input type="number" id="retirementReturns" placeholder="Expected Returns (%)">
+    <button onclick="calculateRetirement()">Calculate</button>
+    <p id="retirementResult"></p>
+</div>
+
+<div class="goal">
+    <h2>SIP Planning</h2>
+    <input type="number" id="sipAmount" placeholder="Monthly SIP Amount">
+    <input type="number" id="sipTimeFrame" placeholder="Time Frame (Years)">
+    <input type="number" id="sipReturns" placeholder="Expected Returns (%)">
+    <button onclick="calculateSIP()">Calculate</button>
+    <p id="sipResult"></p>
+</div>
+
+<div class="goal">
+    <h2>Custom Goal Planning</h2>
+    <input type="number" id="customGoalAmount" placeholder="Target Amount">
+    <input type="number" id="customGoalSavings" placeholder="Current Savings">
+    <input type="number" id="customGoalTimeFrame" placeholder="Time Frame (Years)">
+    <input type="number" id="customGoalReturns" placeholder="Expected Returns (%)">
+    <button onclick="calculateCustomGoal()">Calculate</button>
+    <p id="customGoalResult"></p>
+</div>
+</div>
+
+<script>
+function calculateFutureValue(amount, savings, years, returns) {
+    var rate = returns / 100;
+    var futureValue = savings * Math.pow((1 + rate), years);
+    var neededSavings = amount - futureValue;
+    return (neededSavings > 0) ? "You need to save more: " + neededSavings.toFixed(2) : "You have enough savings.";
+}
+
+function calculateChildEducation() {
+    var amount = parseFloat(document.getElementById('childEducationAmount').value);
+    var savings = parseFloat(document.getElementById('childEducationSavings').value);
+    var years = parseFloat(document.getElementById('childEducationTimeFrame').value);
+    var returns = parseFloat(document.getElementById('childEducationReturns').value);
+    var result = calculateFutureValue(amount, savings, years, returns);
+    document.getElementById('childEducationResult').innerText = result;
+}
+
+function calculateChildWedding() {
+    var amount = parseFloat(document.getElementById('childWeddingAmount').value);
+    var savings = parseFloat(document.getElementById('childWeddingSavings').value);
+    var years = parseFloat(document.getElementById('childWeddingTimeFrame').value);
+    var returns = parseFloat(document.getElementById('childWeddingReturns').value);
+    var result = calculateFutureValue(amount, savings, years, returns);
+    document.getElementById('childWeddingResult').innerText = result;
+}
+
+function calculateDreamHome() {
+    var amount = parseFloat(document.getElementById('dreamHomeAmount').value);
+    var savings = parseFloat(document.getElementById('dreamHomeSavings').value);
+    var years = parseFloat(document.getElementById('dreamHomeTimeFrame').value);
+    var returns = parseFloat(document.getElementById('dreamHomeReturns').value);
+    var result = calculateFutureValue(amount, savings, years, returns);
+    document.getElementById('dreamHomeResult').innerText = result;
+}
+
+function calculateDreamCar() {
+    var amount = parseFloat(document.getElementById('dreamCarAmount').value);
+    var savings = parseFloat(document.getElementById('dreamCarSavings').value);
+    var years = parseFloat(document.getElementById('dreamCarTimeFrame').value);
+    var returns = parseFloat(document.getElementById('dreamCarReturns').value);
+    var result = calculateFutureValue(amount, savings, years, returns);
+    document.getElementById('dreamCarResult').innerText = result;
+}
+
+function calculateDreamVacation() {
+    var amount = parseFloat(document.getElementById('dreamVacationAmount').value);
+    var savings = parseFloat(document.getElementById('dreamVacationSavings').value);
+    var years = parseFloat(document.getElementById('dreamVacationTimeFrame').value);
+    var returns = parseFloat(document.getElementById('dreamVacationReturns').value);
+    var result = calculateFutureValue(amount, savings, years, returns);
+    document.getElementById('dreamVacationResult').innerText = result;
+}
+
+function calculateRetirement() {
+    var amount = parseFloat(document.getElementById('retirementAmount').value);
+    var savings = parseFloat(document.getElementById('retirementSavings').value);
+    var years = parseFloat(document.getElementById('retirementTimeFrame').value);
+    var returns = parseFloat(document.getElementById('retirementReturns').value);
+    var result = calculateFutureValue(amount, savings, years, returns);
+    document.getElementById('retirementResult').innerText = result;
+}
+
+function calculateSIP() {
+    var sipAmount = parseFloat(document.getElementById('sipAmount').value);
+    var years = parseFloat(document.getElementById('sipTimeFrame').value);
+    var returns = parseFloat(document.getElementById('sipReturns').value);
+    var rate = returns / 100 / 12;
+    var futureValue = sipAmount * ((Math.pow((1 + rate),It seems the message got cut off again. Let's complete the code for the SIP Planning section:
+
+```html
+    var futureValue = sipAmount * ((Math.pow((1 + rate), (years * 12)) - 1) / rate) * (1 + rate);
+    document.getElementById('sipResult').innerText = "Future Value: " + futureValue.toFixed(2);
+}
+
+function calculateCustomGoal() {
+    var amount = parseFloat(document.getElementById('customGoalAmount').value);
+    var savings = parseFloat(document.getElementById('customGoalSavings').value);
+    var years = parseFloat(document.getElementById('customGoalTimeFrame').value);
+    var returns = parseFloat(document.getElementById('customGoalReturns').value);
+    var result = calculateFutureValue(amount, savings, years, returns);
+    document.getElementById('customGoalResult').innerText = result;
+}
+</script>
+
+
+<footer class="text-gray-400 bg-gray-900 body-font">
+    <div class="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
+      <a class="flex title-font font-medium items-center md:justify-start justify-center text-white" href="about.html">
+        <img src="img/logo.png" alt="Logo" class="w-20 h-20 text-white p-2 -500 rounded-full">
+        <span class="ml-3 text-xl">CAPITAL SEED</span>
+      </a>
+  </div>
+  
+      </a>
+      <p class="text-sm text-gray-400 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-800 sm:py-2 sm:mt-0 mt-4">© 2024 Tailblocks —
+        <a href="https://instagram.com/dhir4jjjj" class="text-gray-500 ml-1" target="_blank" rel="noopener noreferrer">@dhiraj</a>
+      </p>
+    </div>
+  </footer>
+  
+</body>
+</html>
